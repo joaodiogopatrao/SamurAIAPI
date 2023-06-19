@@ -18,9 +18,9 @@ from django.urls import path, include
 from drf_yasg import openapi, views
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-from SamurAI.Views.DatasetsViews import remove_from_dataset, retrieve_classifier, import_dataset, export_dataset, \
+from SamurAI.Controllers.DatasetsController import remove_from_dataset, retrieve_classifier, import_dataset, export_dataset, \
     add_input_dataset, get_from_dataset
-from SamurAI.Views.ModelsViews import classify_input, create_model, delete_model, train_model, update_model, get_models, \
+from SamurAI.Controllers.ModelsController import classify_input, create_model, delete_model, train_model, update_model, get_models, \
     order_models
 
 schema_view = get_schema_view(
