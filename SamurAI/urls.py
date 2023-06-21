@@ -32,7 +32,6 @@ urlpatterns = [
     path('import_dataset/', datasetscontroller.import_dataset, name='import_dataset'),
     path('export_dataset/', datasetscontroller.export_dataset, name='export_dataset'),
     path('add_input_dataset/', datasetscontroller.add_input_dataset, name='add_input_dataset'),
-    path('remove_from_dataset/', datasetscontroller.remove_from_dataset, name='remove_from_dataset'),
 
     # URLs for the model views
     path('classify_input/', classify_input, name='classify_input'),

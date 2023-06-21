@@ -1,3 +1,8 @@
+import os
+import shutil
+from fileinput import filename
+
+from django.contrib.sites import requests
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
@@ -20,18 +25,29 @@ class DatasetsBO:
             raise e
 
     def import_dataset(self):
-        try:
-            # Logica para importar dataset
-            return
-        except Exception as e:
-            raise e
+        response = requests.post('http://localhost:8000/import_dataset/',
+                                 files={'file': open('path/to/dataset/file.csv', 'rb')})
 
-    def export_dataset(self):
-        try:
-            # Logica para export dataset
-            return
-        except Exception as e:
-            raise e
+        if response.status_code == 200:
+            print('Dataset imported successfully')
+        else:
+            print('Failed to import dataset')
+
+    def export_dataset(self, filename):
+        print(filename)
+        dataset_path = os.path.join('Datasets', filename)
+
+        if not os.path.isfile(dataset_path):
+            return None
+
+        export_folder = 'ExportedDatasets'
+        os.makedirs(export_folder, exist_ok=True)
+
+        exported_dataset_path = os.path.join(export_folder, f'exported_{filename}')
+
+        shutil.copy2(dataset_path, exported_dataset_path)
+
+        return exported_dataset_path
 
     def add_input_dataset(self, input):
         try:

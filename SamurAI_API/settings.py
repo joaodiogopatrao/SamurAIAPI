@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+from drf_yasg.inspectors import SwaggerAutoSchema
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -26,7 +27,6 @@ SECRET_KEY = 'django-insecure-i$^q&0%d9uh5x-$-bhnfn83viragkq)^n5#9%0wmp4)0m3zi17
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'SamurAI',
     'drf_yasg',
     'rest_framework',
+    'rest_framework_swagger'
 
 ]
 
@@ -51,9 +52,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'SamurAI_API.Middlewares.APIKeyMiddleware'
 ]
 
 ROOT_URLCONF = 'SamurAI_API.urls'
+
+VALID_API_KEYS = ['samuraiapikey']
 
 TEMPLATES = [
     {
@@ -72,8 +76,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'SamurAI_API.wsgi.application'
-
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -83,7 +85,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -103,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -117,7 +117,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -127,3 +126,18 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Add the following configuration for file upload
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'  # Enable multipart form data parsing
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_yasg.openapi.AutoSchema',
+}
+
+# Swagger configuration
+SWAGGER_SETTINGS = {
+    'DEFAULT_PAGINATOR_INSPECTOR_CLASS': 'drf_yasg.inspectors.DjangoRestResponsePagination',
+}
